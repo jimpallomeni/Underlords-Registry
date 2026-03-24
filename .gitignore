@@ -1,0 +1,24 @@
+# Ren'Py compiled files
+*.rpyc
+*.rpyb
+
+# Ren'Py cache and saves
+renpy_prototype/game/cache/
+renpy_prototype/game/saves/
+renpy_prototype/log.txt
+renpy_prototype/errors.txt
+renpy_prototype/traceback.txt
+
+# Godot
+.godot/
+*.import
+export_presets.cfg
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
