@@ -4,10 +4,14 @@
 label rebecca_thorne_interview:
     """Full interview with Rebecca Thorne, Exception Hold soul R-0012."""
 
-    scene black with dissolve
+    scene bg interview_booth
+    with dissolve
 
     "KAEL walks to Interview Booth 7—a small enclosed space with two chairs, a table, and a one-way window."
     "The fluorescent light here is slightly warmer. A small concession to the concept of comfort."
+
+    show rebecca neutral at center
+    with dissolve
 
     "REBECCA THORNE sits in the soul's chair. She is translucent, like all souls, but her features are sharp."
     "A woman in her forties, professional attire, the bearing of someone who was used to being listened to."
@@ -42,6 +46,9 @@ label rebecca_exception_direct:
     rebecca "No. Do you?"
 
     kael "The cause of death is redacted. That's unusual."
+
+    show rebecca guarded
+    with dissolve
 
     "REBECCA's expression shifts. Something guarded."
 

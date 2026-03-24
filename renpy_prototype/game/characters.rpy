@@ -16,8 +16,8 @@ define kael_diligent = Character("Kael", color="#80b0e0", what_prefix="{i}", wha
 define kael_compassionate = Character("Kael", color="#80e099", what_prefix="{i}", what_suffix="{/i}")
 define kael_complicit = Character("Kael", color="#b0b0b0", what_prefix="{i}", what_suffix="{/i}")
 
-# Narrator for stage directions and descriptions
-define narrator = Character(None, kind=nvl_narrator)
+# Narrator for stage directions and descriptions (ADV mode - one line at a time)
+define narrator = Character(None)
 
 # System messages (terminal output, etc.)
 define system = Character(None, what_color="#80ff80", what_font="DejaVuSansMono.ttf")

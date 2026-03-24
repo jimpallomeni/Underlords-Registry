@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=3 uid="uid://main_scene"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://player_scene" path="res://scenes/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://terminal_scene" path="res://scenes/processing_terminal.tscn" id="3_terminal"]
+[ext_resource type="PackedScene" uid="uid://dialogue_scene" path="res://scenes/ui/dialogue_box.tscn" id="4_dialogue"]
+[ext_resource type="PackedScene" uid="uid://hud_scene" path="res://scenes/ui/hud.tscn" id="5_hud"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main")
+
+[node name="IntakeFloor" type="Node2D" parent="."]
+
+[node name="Background" type="ColorRect" parent="IntakeFloor"]
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+color = Color(0.15, 0.18, 0.15, 1)
+
+[node name="Floor" type="TileMapLayer" parent="IntakeFloor"]
+tile_set = null
+
+[node name="Walls" type="TileMapLayer" parent="IntakeFloor"]
+tile_set = null
+
+[node name="Furniture" type="Node2D" parent="IntakeFloor"]
+
+[node name="Terminal7" type="StaticBody2D" parent="IntakeFloor/Furniture" groups=["interactable", "terminals"]]
+position = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="IntakeFloor/Furniture/Terminal7"]
+modulate = Color(0.3, 0.3, 0.35, 1)
+scale = Vector2(2, 1.5)
+texture = null
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IntakeFloor/Furniture/Terminal7"]
+shape = null
+
+[node name="InteractionArea" type="Area2D" parent="IntakeFloor/Furniture/Terminal7"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="IntakeFloor/Furniture/Terminal7/InteractionArea"]
+shape = null
+
+[node name="Label" type="Label" parent="IntakeFloor/Furniture/Terminal7"]
+offset_left = -40.0
+offset_top = -30.0
+offset_right = 40.0
+offset_bottom = -10.0
+text = "Terminal 7"
+horizontal_alignment = 1
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(0, 100)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(2, 2)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ProcessingTerminal" parent="CanvasLayer" instance=ExtResource("3_terminal")]
+visible = false
+
+[node name="DialogueBox" parent="CanvasLayer" instance=ExtResource("4_dialogue")]
+visible = false
+
+[node name="HUD" parent="CanvasLayer" instance=ExtResource("5_hud")]

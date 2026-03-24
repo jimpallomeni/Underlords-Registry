@@ -19,8 +19,9 @@ screen say(who, what):
 
         text what id "what"
 
-    if not renpy.variant("small"):
-        add SideImage() xalign 0.0 yalign 1.0
+    # Side images disabled
+    # if not renpy.variant("small"):
+    #     add SideImage() xalign 0.0 yalign 1.0
 
 style window is default
 style say_label is default
@@ -95,8 +96,6 @@ screen choice(items):
             textbutton i.caption action i.action
 
 style choice_vbox is vbox
-style choice_button is button
-style choice_button_text is button_text
 
 style choice_vbox:
     xalign 0.5

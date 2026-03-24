@@ -52,7 +52,7 @@ label cold_open:
 ## ═══════════════════════════════════════════════════════════════════════════
 
 label scene_elevator:
-    scene black
+    scene bg elevator
     with dissolve
 
     "Interior. A service elevator. Fluorescent lighting."
@@ -135,7 +135,7 @@ label elevator_request:
 ## ═══════════════════════════════════════════════════════════════════════════
 
 label scene_intake_floor:
-    scene black
+    scene bg intake_floor
     with dissolve
 
     "The elevator doors open onto the Intake Floor."
@@ -181,6 +181,9 @@ label scene_pressa:
     "KAEL looks up."
 
     "At the next desk—Terminal 8—sits PRESSA."
+
+    show pressa neutral at right
+    with dissolve
 
     "She is old in a way that doesn't invite questions about how old."
     "She has been at the Registry longer than anyone currently employed can verify."
@@ -249,6 +252,9 @@ label pressa_conclude:
 
     pressa "Dolen wants to see you before your shift starts. His office."
 
+    hide pressa
+    with dissolve
+
     jump scene_dolen_office
 
 ## ═══════════════════════════════════════════════════════════════════════════
@@ -256,7 +262,7 @@ label pressa_conclude:
 ## ═══════════════════════════════════════════════════════════════════════════
 
 label scene_dolen_office:
-    scene black
+    scene bg dolens_office
     with dissolve
 
     "KAEL enters the supervisor's office."
@@ -265,6 +271,10 @@ label scene_dolen_office:
     "The view is always slightly unclear, as if the glass itself is uncertain what it's showing."
 
     "SUPERVISOR DOLEN sits behind his desk."
+
+    show dolen neutral at center
+    with dissolve
+
     "He is middle-aged in an eternal way. He has been middle-aged, and a supervisor, for as long as anyone can remember."
     "He is not a bad manager. He is not a good one. He is the manager the Registry produced."
 
@@ -293,7 +303,13 @@ label scene_dolen_office:
     jump dolen_reorientation
 
 label dolen_mira:
+    show dolen nervous
+    with dissolve
+
     "DOLEN's expression flickers. Something passes across his face—discomfort, or something closer to fear. Then it's gone."
+
+    show dolen neutral
+    with dissolve
 
     dolen "Mira transferred to another department. It was... sudden. An opportunity came up."
 
@@ -448,7 +464,7 @@ label dolen_warning:
 ## ═══════════════════════════════════════════════════════════════════════════
 
 label scene_first_shift:
-    scene black
+    scene bg terminal_closeup
     with dissolve
 
     "KAEL returns to their desk. The Processing Terminal hums to life as they sit down."

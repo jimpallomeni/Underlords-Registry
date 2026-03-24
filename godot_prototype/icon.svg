@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <!-- Background -->
+  <rect width="128" height="128" fill="#1a1d1a"/>
+
+  <!-- Terminal frame -->
+  <rect x="16" y="16" width="96" height="96" rx="4" ry="4"
+        fill="none" stroke="#33aa33" stroke-width="2"/>
+
+  <!-- Header line -->
+  <line x1="16" y1="36" x2="112" y2="36" stroke="#33aa33" stroke-width="1"/>
+
+  <!-- Terminal text lines -->
+  <rect x="24" y="24" width="48" height="6" fill="#33aa33"/>
+  <rect x="24" y="44" width="72" height="4" fill="#227722"/>
+  <rect x="24" y="52" width="64" height="4" fill="#227722"/>
+  <rect x="24" y="60" width="56" height="4" fill="#227722"/>
+  <rect x="24" y="68" width="80" height="4" fill="#227722"/>
+
+  <!-- Soul designation highlight -->
+  <rect x="24" y="80" width="40" height="8" fill="#aaaa33"/>
+
+  <!-- Action buttons -->
+  <rect x="24" y="96" width="24" height="6" fill="#33aa33"/>
+  <rect x="52" y="96" width="24" height="6" fill="#33aa33"/>
+
+  <!-- Cursor blink -->
+  <rect x="80" y="68" width="4" height="4" fill="#33ff33"/>
+</svg>
