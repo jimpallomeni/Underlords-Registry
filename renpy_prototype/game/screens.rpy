@@ -1,5 +1,76 @@
 ## screens.rpy — The Underlord's Registry
-## Standard Ren'Py screens (minimal implementation)
+## Complete menu system with noir aesthetic
+
+################################################################################
+## Initialization
+################################################################################
+
+init offset = -2
+
+################################################################################
+## Styles
+################################################################################
+
+style default:
+    properties gui.text_properties()
+    language gui.language
+
+style input:
+    properties gui.text_properties("input", accent=True)
+    adjust_spacing False
+
+style hyperlink_text:
+    properties gui.text_properties("hyperlink", accent=True)
+    hover_underline True
+
+style gui_text:
+    properties gui.text_properties("interface")
+
+style button:
+    properties gui.button_properties("button")
+
+style button_text is gui_text:
+    properties gui.text_properties("button")
+    yalign 0.5
+
+style label_text is gui_text:
+    properties gui.text_properties("label", accent=True)
+
+style prompt_text is gui_text:
+    properties gui.text_properties("prompt")
+
+style bar:
+    ysize gui.bar_size
+    left_bar Frame("gui/bar/left.png", gui.bar_borders, tile=gui.bar_tile)
+    right_bar Frame("gui/bar/right.png", gui.bar_borders, tile=gui.bar_tile)
+
+style vbar:
+    xsize gui.bar_size
+    top_bar Frame("gui/bar/top.png", gui.vbar_borders, tile=gui.bar_tile)
+    bottom_bar Frame("gui/bar/bottom.png", gui.vbar_borders, tile=gui.bar_tile)
+
+style scrollbar:
+    ysize gui.scrollbar_size
+    base_bar Solid("#1a1a1a")
+    thumb Solid("#404040")
+    hover_thumb Solid("#606060")
+
+style vscrollbar:
+    xsize gui.scrollbar_size
+    base_bar Solid("#1a1a1a")
+    thumb Solid("#404040")
+    hover_thumb Solid("#606060")
+
+style slider:
+    ysize gui.slider_size
+    base_bar Solid("#1a1a1a")
+    thumb Solid("#80ff80")
+    hover_thumb Solid("#aaffaa")
+
+style vslider:
+    xsize gui.slider_size
+    base_bar Solid("#1a1a1a")
+    thumb Solid("#80ff80")
 
 ################################################################################
 ## Say Screen
@@ -18,10 +89,6 @@ screen say(who, what):
                 text who id "who"
 
         text what id "what"
-
-    # Side images disabled
-    # if not renpy.variant("small"):
-    #     add SideImage() xalign 0.0 yalign 1.0
 
 style window is default
 style say_label is default
@@ -121,24 +188,40 @@ style choice_button_text:
 ################################################################################
 
 screen quick_menu():
-    # Disabled for prototype - no GUI images
-    pass
+    zorder 100
+
+    if quick_menu:
+        hbox:
+            style_prefix "quick"
+            xalign 0.5
+            yalign 1.0
+            yoffset -10
+
+            textbutton _("Back") action Rollback()
+            textbutton _("History") action ShowMenu('history')
+            textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
+            textbutton _("Auto") action Preference("auto-forward", "toggle")
+            textbutton _("Save") action ShowMenu('save')
+            textbutton _("Q.Save") action QuickSave()
+            textbutton _("Q.Load") action QuickLoad()
+            textbutton _("Prefs") action ShowMenu('preferences')
 
 init python:
-    # Quick menu disabled for prototype
-    pass
+    config.overlay_screens.append("quick_menu")
 
-default quick_menu = False
+default quick_menu = True
 
 style quick_button:
-    background None
-    padding (5, 2, 5, 2)
+    background Solid("#00000088")
+    hover_background Solid("#1a3a1a")
+    padding (8, 4, 8, 4)
 
 style quick_button_text:
     font "DejaVuSansMono.ttf"
-    size 14
-    color "#888888"
-    hover_color "#aaffaa"
+    size 12
+    color "#666666"
+    hover_color "#80ff80"
+    selected_color "#80ff80"
 
 ################################################################################
 ## Main Menu Screen
@@ -150,60 +233,100 @@ screen main_menu():
 
     add Solid("#0a0a0a")
 
+    # Terminal-style scanlines effect
+    add Solid("#ffffff05"):
+        ysize 2
+        ypos 0
+        at transform:
+            linear 0.1 ypos 720
+            repeat
+
     frame:
         xalign 0.5
-        yalign 0.5
-        xsize 600
+        yalign 0.4
+        background None
 
         vbox:
-            spacing 20
+            spacing 10
             xalign 0.5
 
-            text "{size=36}{color=#80ff80}THE UNDERLORD'S REGISTRY{/color}{/size}" xalign 0.5
-            text "{size=18}{color=#666666}Season One: The Department of Final Intake{/color}{/size}" xalign 0.5
-            text "{size=14}{color=#444444}Ren'Py Prototype{/color}{/size}" xalign 0.5
+            # ASCII art title
+            text "{font=DejaVuSansMono.ttf}{size=14}{color=#1a3a1a}╔══════════════════════════════════════════════════════╗{/color}{/size}{/font}" xalign 0.5
+            text "{font=DejaVuSansMono.ttf}{size=14}{color=#1a3a1a}║                                                      ║{/color}{/size}{/font}" xalign 0.5
 
-            null height 30
+            null height 10
 
-            textbutton _("Start") action Start() xalign 0.5
-            textbutton _("Load") action ShowMenu("load") xalign 0.5
-            textbutton _("Preferences") action ShowMenu("preferences") xalign 0.5
-            textbutton _("Quit") action Quit(confirm=not main_menu) xalign 0.5
+            text "{size=42}{color=#80ff80}THE UNDERLORD'S REGISTRY{/color}{/size}" xalign 0.5
+            text "{size=18}{color=#4d994d}Season One: The Department of Final Intake{/color}{/size}" xalign 0.5
 
-style main_menu_frame is empty
-style main_menu_vbox is vbox
-style main_menu_text is gui_text
-style main_menu_title is main_menu_text
-style main_menu_version is main_menu_text
+            null height 5
+
+            text "{font=DejaVuSansMono.ttf}{size=14}{color=#1a3a1a}║                                                      ║{/color}{/size}{/font}" xalign 0.5
+            text "{font=DejaVuSansMono.ttf}{size=14}{color=#1a3a1a}╚══════════════════════════════════════════════════════╝{/color}{/size}{/font}" xalign 0.5
+
+    # Menu buttons
+    frame:
+        xalign 0.5
+        yalign 0.75
+        background None
+
+        vbox:
+            spacing 15
+            xalign 0.5
+
+            textbutton _("NEW SHIFT") action Start() xalign 0.5
+            textbutton _("CONTINUE") action ShowMenu("load") xalign 0.5
+            textbutton _("PREFERENCES") action ShowMenu("preferences") xalign 0.5
+            textbutton _("QUIT") action Quit(confirm=False) xalign 0.5
+
+    # Version info
+    text "{size=12}{color=#333333}Ren'Py Prototype v0.1{/color}{/size}":
+        xalign 1.0
+        yalign 1.0
+        xoffset -10
+        yoffset -10
+
+style main_menu_frame:
+    background None
 
 style main_menu_vbox:
-    xalign 0.5
-    yalign 0.5
-    spacing 20
+    spacing 15
 
-style main_menu_text:
+style main_menu_button:
+    xsize 300
+    padding (20, 10, 20, 10)
+    background Solid("#0a0a0a")
+    hover_background Solid("#1a3a1a")
+    selected_background Solid("#1a3a1a")
+
+style main_menu_button_text:
     font "DejaVuSansMono.ttf"
-    size 22
-    color "#80ff80"
-    hover_color "#aaffaa"
+    size 20
+    color "#4d994d"
+    hover_color "#80ff80"
+    selected_color "#80ff80"
+    xalign 0.5
+    text_align 0.5
 
 ################################################################################
-## Game Menu Screen
+## Game Menu Base Screen
 ################################################################################
 
 screen game_menu(title, scroll=None, yinitial=0.0):
     style_prefix "game_menu"
 
-    if main_menu:
-        add Solid("#0a0a0a")
+    add Solid("#0a0a0acc")
 
     frame:
         style "game_menu_outer_frame"
 
         hbox:
+            # Left navigation
             frame:
                 style "game_menu_navigation_frame"
+                use navigation
 
+            # Right content
             frame:
                 style "game_menu_content_frame"
 
@@ -231,43 +354,63 @@ screen game_menu(title, scroll=None, yinitial=0.0):
                 else:
                     transclude
 
-    use navigation
+    # Title
+    frame:
+        xpos 300
+        ypos 30
+        background None
+        text "{size=28}{color=#80ff80}[title]{/color}{/size}"
 
-    textbutton _("Return"):
+    # Return button
+    textbutton _("< Return"):
         style "return_button"
         action Return()
+        xpos 40
+        ypos 30
 
-    label title
+    key "game_menu" action Return()
 
-    if main_menu:
-        key "game_menu" action ShowMenu("main_menu")
+style game_menu_outer_frame:
+    background None
+    xfill True
+    yfill True
 
-style game_menu_outer_frame is empty
-style game_menu_navigation_frame is empty
-style game_menu_content_frame is empty
-style game_menu_viewport is gui_viewport
-style game_menu_side is gui_side
-style game_menu_scrollbar is gui_vscrollbar
-style game_menu_label is gui_label
-style game_menu_label_text is gui_label_text
+style game_menu_navigation_frame:
+    xsize 250
+    yfill True
+    background Solid("#0f0f0f")
 
-style return_button is navigation_button
-style return_button_text is navigation_button_text
+style game_menu_content_frame:
+    left_margin 20
+    right_margin 20
+    top_margin 80
+    bottom_margin 20
+
+style return_button:
+    background None
+    hover_background Solid("#1a3a1a")
+    padding (10, 5, 10, 5)
+
+style return_button_text:
+    font "DejaVuSansMono.ttf"
+    size 16
+    color "#666666"
+    hover_color "#80ff80"
 
 ################################################################################
 ## Navigation Screen
 ################################################################################
 
 screen navigation():
+    style_prefix "navigation"
+
     vbox:
-        style_prefix "navigation"
-        xpos 40
-        yalign 0.5
-        spacing gui.navigation_spacing
+        xalign 0.5
+        ypos 100
+        spacing 8
 
         if main_menu:
-            textbutton _("Start") action Start()
-
+            textbutton _("New Shift") action Start()
         else:
             textbutton _("History") action ShowMenu("history")
             textbutton _("Save") action ShowMenu("save")
@@ -277,23 +420,27 @@ screen navigation():
 
         if _in_replay:
             textbutton _("End Replay") action EndReplay(confirm=True)
-
         elif not main_menu:
+            null height 20
             textbutton _("Main Menu") action MainMenu()
 
+        null height 20
         textbutton _("Quit") action Quit(confirm=not main_menu)
 
 style navigation_button:
-    size_group "navigation"
-    padding (10, 5, 10, 5)
+    xsize 200
+    padding (15, 8, 15, 8)
     background None
     hover_background Solid("#1a3a1a")
+    selected_background Solid("#1a3a1a")
 
 style navigation_button_text:
     font "DejaVuSansMono.ttf"
-    size 18
-    color "#80ff80"
-    hover_color "#aaffaa"
+    size 16
+    color "#666666"
+    hover_color "#80ff80"
+    selected_color "#80ff80"
+    xalign 0.5
 
 ################################################################################
 ## Save and Load Screens
@@ -301,68 +448,98 @@ style navigation_button_text:
 
 screen save():
     tag menu
-    use file_slots(_("Save"))
+    use file_slots(_("Save Game"))
 
 screen load():
     tag menu
-    use file_slots(_("Load"))
+    use file_slots(_("Load Game"))
 
 screen file_slots(title):
-    default page_name_value = FilePageNameInputValue(pattern=_("Page {}"), auto=_("Automatic saves"), quick=_("Quick saves"))
-
     use game_menu(title):
-        fixed:
-            order_reverse True
 
+        fixed:
+            # Page selector at top
+            hbox:
+                style_prefix "page"
+                xalign 0.5
+                ypos 0
+                spacing 10
+
+                textbutton _("<") action FilePagePrevious()
+
+                if config.has_autosave:
+                    textbutton _("Auto") action FilePage("auto")
+
+                if config.has_quicksave:
+                    textbutton _("Quick") action FilePage("quick")
+
+                for page in range(1, 6):
+                    textbutton "[page]" action FilePage(page)
+
+                textbutton _(">") action FilePageNext()
+
+            # Save slots grid
             grid gui.file_slot_cols gui.file_slot_rows:
                 style_prefix "slot"
                 xalign 0.5
-                yalign 0.5
-                spacing 10
+                yalign 0.6
+                spacing 20
 
                 for i in range(gui.file_slot_cols * gui.file_slot_rows):
                     $ slot = i + 1
 
                     button:
                         action FileAction(slot)
-                        has vbox
 
-                        add FileScreenshot(slot) xalign 0.5
+                        vbox:
+                            xalign 0.5
+                            spacing 5
 
-                        text FileTime(slot, format=_("{#file_time}%A, %B %d %Y, %H:%M"), empty=_("empty slot")):
-                            style "slot_time_text"
+                            # Screenshot placeholder
+                            add FileScreenshot(slot):
+                                xalign 0.5
 
-                        text FileSaveName(slot):
-                            style "slot_name_text"
+                            # Slot info
+                            text FileTime(slot, format=_("%b %d, %H:%M"), empty=_("- Empty Slot -")):
+                                style "slot_time_text"
+
+                            text FileSaveName(slot):
+                                style "slot_name_text"
 
                         key "save_delete" action FileDelete(slot)
 
-            hbox:
-                style_prefix "page"
-                xalign 0.5
-                yalign 1.0
+style page_button:
+    padding (10, 5, 10, 5)
+    background Solid("#1a1a1a")
+    hover_background Solid("#2a4a2a")
+    selected_background Solid("#1a3a1a")
 
-                spacing gui.page_spacing
+style page_button_text:
+    font "DejaVuSansMono.ttf"
+    size 14
+    color "#666666"
+    hover_color "#80ff80"
+    selected_color "#80ff80"
 
-                textbutton _("<") action FilePagePrevious()
-                if config.has_autosave:
-                    textbutton _("{#auto_page}A") action FilePage("auto")
-                if config.has_quicksave:
-                    textbutton _("{#quick_page}Q") action FilePage("quick")
+style slot_button:
+    xsize 280
+    ysize 200
+    padding (10, 10, 10, 10)
+    background Solid("#1a1a1a")
+    hover_background Solid("#2a4a2a")
+    selected_background Solid("#1a3a1a")
 
-                for page in range(1, 10):
-                    textbutton "[page]" action FilePage(page)
+style slot_time_text:
+    font "DejaVuSansMono.ttf"
+    size 14
+    color "#80ff80"
+    xalign 0.5
 
-                textbutton _(">") action FilePageNext()
-
-style page_label is gui_label
-style page_label_text is gui_label_text
-style page_button is gui_button
-style page_button_text is gui_button_text
-style slot_button is gui_button
-style slot_button_text is gui_button_text
-style slot_time_text is slot_button_text
-style slot_name_text is slot_button_text
+style slot_name_text:
+    font "DejaVuSansMono.ttf"
+    size 12
+    color "#888888"
+    xalign 0.5
 
 ################################################################################
 ## Preferences Screen
@@ -370,74 +547,130 @@ style slot_name_text is slot_button_text
 
 screen preferences():
     tag menu
-    use game_menu(_("Preferences"), scroll="viewport"):
-        vbox:
-            hbox:
-                box_wrap True
 
-                if renpy.variant("pc") or renpy.variant("web"):
-                    vbox:
-                        style_prefix "radio"
-                        label _("Display")
-                        textbutton _("Window") action Preference("display", "window")
-                        textbutton _("Fullscreen") action Preference("display", "fullscreen")
+    use game_menu(_("Preferences"), scroll="viewport"):
+
+        vbox:
+            xalign 0.5
+            spacing 30
+
+            # Display options
+            hbox:
+                style_prefix "pref"
+                box_wrap True
+                spacing 40
+
+                vbox:
+                    style_prefix "radio"
+                    label _("Display")
+                    textbutton _("Windowed") action Preference("display", "window")
+                    textbutton _("Fullscreen") action Preference("display", "fullscreen")
+
+                vbox:
+                    style_prefix "radio"
+                    label _("Rollback Side")
+                    textbutton _("Left") action Preference("rollback side", "left")
+                    textbutton _("Right") action Preference("rollback side", "right")
+                    textbutton _("Disable") action Preference("rollback side", "disable")
 
                 vbox:
                     style_prefix "check"
                     label _("Skip")
                     textbutton _("Unseen Text") action Preference("skip", "toggle")
                     textbutton _("After Choices") action Preference("after choices", "toggle")
-                    textbutton _("Transitions") action InvertSelected(Preference("transitions", "toggle"))
+
+            null height 20
+
+            # Sliders
+            vbox:
+                style_prefix "slider"
+                spacing 20
 
                 vbox:
-                    style_prefix "slider"
-                    box_wrap True
-
                     label _("Text Speed")
                     bar value Preference("text speed")
 
+                vbox:
                     label _("Auto-Forward Time")
                     bar value Preference("auto-forward time")
 
-            if config.has_music or config.has_sound:
-                null height 20
+            null height 20
 
-                hbox:
-                    box_wrap True
+            # Volume controls
+            vbox:
+                style_prefix "slider"
+                spacing 20
 
-                    if config.has_music:
-                        vbox:
-                            style_prefix "slider"
-                            label _("Music Volume")
-                            hbox:
-                                bar value Preference("music volume")
+                vbox:
+                    label _("Music Volume")
+                    bar value Preference("music volume")
 
-                    if config.has_sound:
-                        vbox:
-                            style_prefix "slider"
-                            label _("Sound Volume")
-                            hbox:
-                                bar value Preference("sound volume")
+                vbox:
+                    label _("Sound Volume")
+                    bar value Preference("sound volume")
 
-style pref_label is gui_label
-style pref_label_text is gui_label_text
-style pref_vbox is vbox
-style radio_label is pref_label
-style radio_label_text is pref_label_text
-style radio_button is gui_button
-style radio_button_text is gui_button_text
-style radio_vbox is pref_vbox
-style check_label is pref_label
-style check_label_text is pref_label_text
-style check_button is gui_button
-style check_button_text is gui_button_text
-style check_vbox is pref_vbox
-style slider_label is pref_label
-style slider_label_text is pref_label_text
-style slider_slider is gui_slider
-style slider_button is gui_button
-style slider_button_text is gui_button_text
-style slider_pref_vbox is pref_vbox
+                vbox:
+                    label _("Voice Volume")
+                    bar value Preference("voice volume")
+
+                textbutton _("Mute All"):
+                    action Preference("all mute", "toggle")
+                    style "check_button"
+
+style pref_label:
+    top_margin 10
+    bottom_margin 5
+
+style pref_label_text:
+    font "DejaVuSansMono.ttf"
+    size 18
+    color "#80ff80"
+
+style radio_button:
+    padding (20, 5, 5, 5)
+    background None
+    hover_background Solid("#1a3a1a22")
+
+style radio_button_text:
+    font "DejaVuSansMono.ttf"
+    size 16
+    color "#666666"
+    hover_color "#aaffaa"
+    selected_color "#80ff80"
+
+style check_button:
+    padding (20, 5, 5, 5)
+    background None
+    hover_background Solid("#1a3a1a22")
+
+style check_button_text:
+    font "DejaVuSansMono.ttf"
+    size 16
+    color "#666666"
+    hover_color "#aaffaa"
+    selected_color "#80ff80"
+
+style slider_label:
+    top_margin 5
+    bottom_margin 5
+
+style slider_label_text:
+    font "DejaVuSansMono.ttf"
+    size 16
+    color "#80ff80"
+
+style slider_slider:
+    xsize 500
+    ysize 24
+    base_bar Solid("#1a1a1a")
+    hover_base_bar Solid("#2a2a2a")
+    thumb Solid("#80ff80")
+    hover_thumb Solid("#aaffaa")
+    thumb_size 12
+    thumb_offset 6
+
+style slider_vbox:
+    xsize 600
 
 ################################################################################
 ## History Screen
@@ -453,52 +686,42 @@ screen history():
         for h in _history_list:
             window:
                 has hbox:
-                    yfill True
-                    spacing 10
+                    spacing 20
 
-                text (h.who or "") style "history_name"
-                text h.what
+                if h.who:
+                    text h.who:
+                        style "history_name"
+                        min_width 150
+                else:
+                    text "":
+                        min_width 150
+
+                text h.what:
+                    style "history_text"
 
         if not _history_list:
-            label _("The dialogue history is empty.")
+            text _("The dialogue history is empty."):
+                xalign 0.5
+                color "#666666"
 
 define config.history_length = 250
 
-style history_window is empty
-style history_name is gui_label
-style history_name_text is gui_label_text
-style history_text is gui_text
-style history_label is gui_label
-style history_label_text is gui_label_text
-
 style history_window:
     xfill True
-    ysize gui.history_height
+    ysize 80
+    background Solid("#0a0a0a")
+    padding (10, 5, 10, 5)
 
 style history_name:
-    xpos gui.history_name_xpos
-    xanchor gui.history_name_xalign
-    ypos gui.history_name_ypos
-    xsize gui.history_name_width
-
-style history_name_text:
-    min_width gui.history_name_width
-    text_align gui.history_name_xalign
+    font "DejaVuSans.ttf"
+    size 16
+    color "#80ff80"
+    text_align 1.0
 
 style history_text:
-    xpos gui.history_text_xpos
-    ypos gui.history_text_ypos
-    xanchor gui.history_text_xalign
-    xsize gui.history_text_width
-    min_width gui.history_text_width
-    text_align gui.history_text_xalign
-    layout ("subtitle" if gui.history_text_xalign else "tex")
-
-style history_label:
-    xfill True
-
-style history_label_text:
-    xalign 0.5
+    font "DejaVuSans.ttf"
+    size 16
+    color "#cccccc"
 
 ################################################################################
 ## Confirm Screen
@@ -509,42 +732,56 @@ screen confirm(message, yes_action, no_action):
     zorder 200
     style_prefix "confirm"
 
-    add Solid("#000000cc")
+    add Solid("#000000dd")
 
     frame:
+        xalign 0.5
+        yalign 0.5
+
         vbox:
-            xalign .5
-            yalign .5
+            xalign 0.5
             spacing 30
 
-            label _(message):
+            # Terminal-style border
+            text "{font=DejaVuSansMono.ttf}{size=12}{color=#4d994d}╔════════════════════════════════════════╗{/color}{/size}{/font}" xalign 0.5
+
+            text "[message]":
                 style "confirm_prompt"
                 xalign 0.5
 
             hbox:
                 xalign 0.5
-                spacing 100
+                spacing 50
 
                 textbutton _("Yes") action yes_action
                 textbutton _("No") action no_action
 
+            text "{font=DejaVuSansMono.ttf}{size=12}{color=#4d994d}╚════════════════════════════════════════╝{/color}{/size}{/font}" xalign 0.5
+
     key "game_menu" action no_action
 
-style confirm_frame is gui_frame
-style confirm_prompt is gui_prompt
-style confirm_prompt_text is gui_prompt_text
-style confirm_button is gui_medium_button
-style confirm_button_text is gui_medium_button_text
-
 style confirm_frame:
-    background Solid("#222222ee")
-    padding (40, 40, 40, 40)
-    xalign .5
-    yalign .5
+    background Solid("#0a0a0a")
+    padding (50, 30, 50, 30)
 
-style confirm_prompt_text:
+style confirm_prompt:
+    font "DejaVuSansMono.ttf"
+    size 20
+    color "#80ff80"
     text_align 0.5
-    layout "subtitle"
+
+style confirm_button:
+    xsize 120
+    padding (20, 10, 20, 10)
+    background Solid("#1a3a1a")
+    hover_background Solid("#2a5a2a")
+
+style confirm_button_text:
+    font "DejaVuSansMono.ttf"
+    size 18
+    color "#80ff80"
+    hover_color "#aaffaa"
+    xalign 0.5
 
 ################################################################################
 ## Skip Indicator Screen
@@ -557,10 +794,10 @@ screen skip_indicator():
     frame:
         hbox:
             spacing 6
-            text _("Skipping")
-            text "▸" at delayed_blink(0.0, 1.0) style "skip_triangle"
-            text "▸" at delayed_blink(0.2, 1.0) style "skip_triangle"
-            text "▸" at delayed_blink(0.4, 1.0) style "skip_triangle"
+            text _("SKIPPING")
+            text ">" at delayed_blink(0.0, 1.0) style "skip_triangle"
+            text ">" at delayed_blink(0.2, 1.0) style "skip_triangle"
+            text ">" at delayed_blink(0.4, 1.0) style "skip_triangle"
 
 transform delayed_blink(delay, cycle):
     alpha .5
@@ -572,20 +809,21 @@ transform delayed_blink(delay, cycle):
         pause (cycle - .4)
         repeat
 
-style skip_frame is empty
-style skip_text is gui_text
-style skip_triangle is skip_text
-
 style skip_frame:
     ypos 10
-    background Solid("#000000aa")
-    padding (16, 5, 50, 5)
+    xpos 10
+    background Solid("#0a0a0a")
+    padding (15, 8, 15, 8)
 
 style skip_text:
-    size 16
+    font "DejaVuSansMono.ttf"
+    size 14
+    color "#80ff80"
 
 style skip_triangle:
-    font "DejaVuSans.ttf"
+    font "DejaVuSansMono.ttf"
+    size 14
+    color "#80ff80"
 
 ################################################################################
 ## Notify Screen
@@ -607,16 +845,19 @@ transform notify_appear:
     on hide:
         linear .5 alpha 0.0
 
-style notify_frame is empty
-style notify_text is gui_text
-
 style notify_frame:
     ypos 25
-    background Solid("#000000aa")
-    padding (16, 5, 40, 5)
+    xalign 0.5
+    background Solid("#1a3a1a")
+    padding (20, 10, 20, 10)
+
+style notify_text:
+    font "DejaVuSansMono.ttf"
+    size 16
+    color "#80ff80"
 
 ################################################################################
-## NVL Screen
+## NVL Screen (Not used but required)
 ################################################################################
 
 screen nvl(dialogue, items=None):
@@ -632,8 +873,6 @@ screen nvl(dialogue, items=None):
             textbutton i.caption:
                 action i.action
                 style "nvl_button"
-
-    add SideImage() xalign 0.0 yalign 1.0
 
 screen nvl_dialogue(dialogue):
     for d in dialogue:
@@ -663,37 +902,92 @@ style nvl_window:
     background Solid("#000000dd")
     padding gui.nvl_borders.padding
 
-style nvl_entry:
-    xfill True
-    ysize gui.nvl_height
+################################################################################
+## Mobile Variants (Unused but helps prevent errors)
+################################################################################
 
-style nvl_label:
-    xpos gui.nvl_name_xpos
-    xanchor gui.nvl_name_xalign
-    ypos gui.nvl_name_ypos
-    yanchor 0.0
-    xsize gui.nvl_name_width
-    min_width gui.nvl_name_width
-    text_align gui.nvl_name_xalign
+style pref_vbox:
+    variant "medium"
+    xsize 450
 
-style nvl_dialogue:
-    xpos gui.nvl_text_xpos
-    xanchor gui.nvl_text_xalign
-    ypos gui.nvl_text_ypos
-    xsize gui.nvl_text_width
-    min_width gui.nvl_text_width
-    text_align gui.nvl_text_xalign
-    layout ("subtitle" if gui.nvl_text_xalign else "tex")
+################################################################################
+## Irregularity Log Screen
+################################################################################
 
-style nvl_thought:
-    xpos gui.nvl_thought_xpos
-    xanchor gui.nvl_thought_xalign
-    ypos gui.nvl_thought_ypos
-    xsize gui.nvl_thought_width
-    min_width gui.nvl_thought_width
-    text_align gui.nvl_thought_xalign
-    layout ("subtitle" if gui.nvl_thought_xalign else "tex")
+screen irregularity_log():
+    tag log
+    modal False
+    zorder 50
 
-style nvl_button:
-    xpos gui.nvl_button_xpos
-    xanchor gui.nvl_button_xalign
+    frame:
+        xalign 1.0
+        yalign 0.0
+        xsize 400
+        ysize 500
+        xoffset -20
+        yoffset 20
+        background Solid("#0a0a0acc")
+        padding (15, 15, 15, 15)
+
+        vbox:
+            spacing 10
+
+            text "{color=#80ff80}╔══ IRREGULARITY LOG ══╗{/color}":
+                font "DejaVuSansMono.ttf"
+                size 16
+                xalign 0.5
+
+            null height 5
+
+            viewport:
+                scrollbars "vertical"
+                mousewheel True
+                ysize 400
+
+                vbox:
+                    spacing 10
+
+                    if hasattr(store, 'game_state') and game_state.irregularity_log:
+                        for entry in game_state.irregularity_log:
+                            frame:
+                                background Solid("#1a1a1a")
+                                padding (10, 8, 10, 8)
+                                xfill True
+
+                                vbox:
+                                    spacing 3
+                                    $ cat_color = "#80ff80" if entry.get("category") == "observation" else ("#ffaa00" if entry.get("category") == "evidence" else "#6699ff")
+                                    text "[entry[title]]":
+                                        font "DejaVuSansMono.ttf"
+                                        size 14
+                                        color cat_color
+                                    text "[entry[content]]":
+                                        font "DejaVuSans.ttf"
+                                        size 12
+                                        color "#999999"
+                    else:
+                        text "{i}No irregularities logged.{/i}":
+                            font "DejaVuSans.ttf"
+                            size 14
+                            color "#666666"
+                            xalign 0.5
+
+            text "{color=#666666}Press L to close{/color}":
+                font "DejaVuSansMono.ttf"
+                size 12
+                xalign 0.5
+
+    key "l" action Hide("irregularity_log")
+    key "L" action Hide("irregularity_log")
+
+# Global key binding for log
+init python:
+    config.keymap['toggle_log'] = ['l', 'L']
+
+    def toggle_log():
+        if renpy.get_screen("irregularity_log"):
+            renpy.hide_screen("irregularity_log")
+        else:
+            renpy.show_screen("irregularity_log")
+
+    config.underlay.append(renpy.Keymap(toggle_log=toggle_log))

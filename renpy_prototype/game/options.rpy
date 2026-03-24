@@ -25,6 +25,18 @@ default preferences.afm_time = 15
 
 define config.save_directory = "UnderlordRegistry-Prototype"
 
+# Save system configuration
+define config.has_autosave = True
+define config.autosave_on_quit = True
+define config.autosave_slots = 5
+
+define config.has_quicksave = True
+define config.quicksave_slots = 5
+
+# Screenshot configuration for save slots
+define config.thumbnail_width = 256
+define config.thumbnail_height = 144
+
 define config.window_icon = None
 
 define build.name = "UnderlordRegistry"

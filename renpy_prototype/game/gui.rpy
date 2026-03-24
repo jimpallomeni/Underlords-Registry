@@ -77,8 +77,18 @@ define gui.quick_button_text_selected_color = gui.accent_color
 # Scrollbars
 define gui.scrollbar_size = 12
 define gui.scrollbar_tile = False
-
 define gui.unscrollable = "hide"
+
+# Bars and Sliders
+define gui.bar_size = 25
+define gui.bar_borders = Borders(4, 4, 4, 4)
+define gui.bar_tile = False
+define gui.vbar_borders = Borders(4, 4, 4, 4)
+
+define gui.slider_size = 25
+define gui.slider_borders = Borders(4, 4, 4, 4)
+define gui.slider_tile = False
+define gui.vslider_borders = Borders(4, 4, 4, 4)
 
 # Slots
 define gui.slot_button_width = 276

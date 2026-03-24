@@ -339,6 +339,7 @@ Using ColorRect nodes. Recommended free assets documented in `godot_prototype/RE
 | Tone System | Working | 4-tone tracking (sardonic/diligent/compassionate/complicit) |
 | Relationships | Working | -100 to 100 scale for NPCs |
 | Interview System | Working | `game/interviews/rebecca_thorne.rpy` |
+| Menu System | Working | Save/Load, Preferences, History, Quick Menu |
 
 ### Art Assets
 
@@ -375,7 +376,17 @@ See `renpy_prototype/art_prompts.md` for full generation prompts.
 | L | Toggle Irregularity Log |
 | M | Toggle metadata (in terminal) |
 | 1-4 | Terminal action shortcuts |
-| ESC | Game menu |
+| ESC | Game menu (Save/Load/Prefs) |
+| Q.Save | Quick save (from quick menu) |
+| Q.Load | Quick load (from quick menu) |
+
+### Menu Features
+
+- **Main Menu:** New Shift, Continue, Preferences, Quit
+- **Game Menu (ESC):** History, Save, Load, Preferences, Main Menu, Quit
+- **Save/Load:** 6 slots per page, 5 pages + Auto + Quick saves
+- **Preferences:** Display (Window/Fullscreen), Text Speed, Auto-Forward, Volume controls
+- **Quick Menu:** Back, History, Skip, Auto, Save, Q.Save, Q.Load, Prefs
 
 ### Playable Content
 
